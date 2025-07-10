@@ -6,10 +6,6 @@
 
 **Endpoint**: `POST /api/runner`
 
-**Headers**:
-
-- `Authorization`: `Bearer <token>`
-
 **Request Body**:
 
 ```json
@@ -44,10 +40,6 @@
 
 **Endpoint**: `GET /api/runner`
 
-**Headers**:
-
-- `Authorization`: `Bearer <token>`
-
 **Response**:
 
 ```json
@@ -74,10 +66,6 @@
 
 **Endpoint**: `GET /api/runner/:id`
 
-**Headers**:
-
-- `Authorization`: `Bearer <token>`
-
 **Response**:
 
 ```json
@@ -101,10 +89,6 @@
 ## 📌 Update Runner
 
 **Endpoint**: `PUT /api/runner/:id`
-
-**Headers**:
-
-- `Authorization`: `Bearer <token>`
 
 **Request Body** (partial update allowed):
 
@@ -140,10 +124,6 @@
 
 **Endpoint**: `DELETE /api/runner/:id`
 
-**Headers**:
-
-- `Authorization`: `Bearer <token>`
-
 **Response**:
 
 ```json
@@ -160,10 +140,6 @@
 ## 📌 Update Last Scanned (Scan BIB)
 
 **Endpoint**: `PUT /api/runner/scan-bib/:bib`
-
-**Headers**:
-
-- `Authorization`: `Bearer <token>`
 
 **Behavior**:
 
@@ -192,10 +168,6 @@
 ## 📌 Get Runner With Latest Scan
 
 **Endpoint**: `GET /api/runner/last-scanned`
-
-**Headers**:
-
-- `Authorization`: `Bearer <token>`
 
 **Behavior**:
 
