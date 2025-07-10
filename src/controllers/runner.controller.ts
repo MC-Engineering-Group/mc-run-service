@@ -200,9 +200,9 @@ export const updateLastScanned = async (
   req: Request,
   res: Response<CommonResponse>
 ) => {
-  const id = Number(req.params.id);
+  const bib = req.params.id;
 
-  if (isNaN(id)) {
+  if (!bib) {
     return res.status(400).json({
       status: 400,
       message: "Invalid runner ID",
@@ -213,7 +213,7 @@ export const updateLastScanned = async (
 
   try {
     const runner = await prisma.runner.update({
-      where: { id },
+      where: { bib },
       data: { last_scanned: new Date() },
     });
 

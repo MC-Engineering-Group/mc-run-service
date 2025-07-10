@@ -31,7 +31,7 @@ model Runner {
   id           Int       @id @default(autoincrement())
   name         String
   run_type     String
-  bib          String
+  bib          String    @unique
   last_scanned DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
