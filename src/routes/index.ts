@@ -1,12 +1,17 @@
-import authRoute from './auth.route';
-import express, { Router } from 'express';
+import authRoute from "./auth.route";
+import runnerRoute from "./runner.route";
+import express, { Router } from "express";
 
 const router: Router = express.Router();
 
 const routes = [
   {
-    path: '/api/v1',
+    path: "/api/auth",
     route: authRoute,
+  },
+  {
+    path: "/api/runner",
+    route: runnerRoute,
   },
 ];
 
