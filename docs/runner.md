@@ -159,7 +159,7 @@
 
 ## 📌 Update Last Scanned (Scan BIB)
 
-**Endpoint**: `PUT /api/runner/scan-bib/:id`
+**Endpoint**: `PUT /api/runner/scan-bib/:bib`
 
 **Headers**:
 
