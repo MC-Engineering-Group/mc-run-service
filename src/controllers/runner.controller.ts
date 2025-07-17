@@ -51,11 +51,11 @@ export const getAllRunners = async (
     const skip = (page - 1) * limit;
 
     // ✅ Filter keyword jika ada
-    const whereClause = keyword
+    const whereClause: Prisma.RunnerWhereInput = keyword
       ? {
           OR: [
             { name: { contains: keyword, mode: "insensitive" } },
-            { description: { contains: keyword, mode: "insensitive" } },
+            { bib: { contains: keyword, mode: "insensitive" } },
           ],
         }
       : {};
@@ -78,7 +78,6 @@ export const getAllRunners = async (
       meta: {
         page,
         limit,
-        keyword,
         total,
       },
       error: null,
@@ -91,14 +90,12 @@ export const getAllRunners = async (
       meta: {
         page: 1,
         limit: 10,
-        keyword: "",
         total: 0,
       },
       error,
     });
   }
 };
-
 
 // ✅ Get One Runner by ID
 export const getRunnerById = async (
@@ -179,18 +176,9 @@ export const updateRunner = async (
       error: null,
     });
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      return res.status(404).json({
-        status: 404,
-        message: "Runner not found",
-        data: null,
-        error,
-      });
-    }
-
-    return res.status(400).json({
-      status: 400,
-      message: "Error updating runner",
+    return res.status(404).json({
+      status: 404,
+      message: "Runner not found",
       data: null,
       error,
     });
