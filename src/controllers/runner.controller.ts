@@ -39,29 +39,66 @@ export const createRunner = async (
 
 // ✅ Get All Runners
 export const getAllRunners = async (
-  _req: Request,
+  req: Request,
   res: Response<CommonResponse>
 ) => {
   try {
+    // ✅ Ambil query params dengan default
+    const page = Math.max(parseInt(req.query.page as string) || 1, 1);
+    const limit = Math.max(parseInt(req.query.limit as string) || 10, 1);
+    const keyword = (req.query.keyword as string) || "";
+
+    const skip = (page - 1) * limit;
+
+    // ✅ Filter keyword jika ada
+    const whereClause = keyword
+      ? {
+          OR: [
+            { name: { contains: keyword, mode: "insensitive" } },
+            { description: { contains: keyword, mode: "insensitive" } },
+          ],
+        }
+      : {};
+
+    // ✅ Hitung total data untuk meta
+    const total = await prisma.runner.count({ where: whereClause });
+
+    // ✅ Ambil data dengan pagination
     const runners = await prisma.runner.findMany({
+      where: whereClause,
       orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
     });
 
     return res.status(200).json({
       status: 200,
-      message: "All runners retrieved",
+      message: "Runners retrieved successfully",
       data: runners,
+      meta: {
+        page,
+        limit,
+        keyword,
+        total,
+      },
       error: null,
     });
   } catch (error) {
-    return res.status(400).json({
-      status: 400,
+    return res.status(200).json({
+      status: 200,
       message: "Failed to retrieve runners",
-      data: null,
+      data: [],
+      meta: {
+        page: 1,
+        limit: 10,
+        keyword: "",
+        total: 0,
+      },
       error,
     });
   }
 };
+
 
 // ✅ Get One Runner by ID
 export const getRunnerById = async (
