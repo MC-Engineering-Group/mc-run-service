@@ -40,6 +40,14 @@
 
 **Endpoint**: `GET /api/runner`
 
+**Query Params**:
+
+| Param     | Type   | Default | Description                   |
+| --------- | ------ | ------- | ----------------------------- |
+| `page`    | number | `1`     | Halaman yang ingin diambil    |
+| `limit`   | number | `10`    | Jumlah data per halaman       |
+| `keyword` | string | `""`    | Filter berdasarkan nama / bib |
+
 **Response**:
 
 ```json
