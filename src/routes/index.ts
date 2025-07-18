@@ -1,5 +1,6 @@
 import authRoute from "./auth.route";
 import runnerRoute from "./runner.route";
+import keyRoute from "./key.route";
 import express, { Router } from "express";
 
 const router: Router = express.Router();
@@ -12,6 +13,10 @@ const routes = [
   {
     path: "/api/runner",
     route: runnerRoute,
+  },
+  {
+    path: "/api/key",
+    route: keyRoute,
   },
 ];
 
