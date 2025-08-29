@@ -47,6 +47,8 @@ export const getAllRunners = async (
     const page = Math.max(parseInt(req.query.page as string) || 1, 1);
     const limit = Math.max(parseInt(req.query.limit as string) || 10, 1);
     const keyword = (req.query.keyword as string) || "";
+    const sortBy = (req.query.sortBy as string) || "updatedAt";
+    const sortOrder = (req.query.sortOrder as string) || "desc";
 
     const skip = (page - 1) * limit;
 
@@ -63,10 +65,25 @@ export const getAllRunners = async (
     // ✅ Hitung total data untuk meta
     const total = await prisma.runner.count({ where: whereClause });
 
-    // ✅ Ambil data dengan pagination
+    // ✅ Tentukan orderBy berdasarkan sortBy
+    let orderByClause: Prisma.RunnerOrderByWithRelationInput = {};
+
+    if (sortBy === "last_scanned" || sortBy === "last_scanned_2") {
+      // Untuk field yang bisa null, urutkan null values terakhir
+      orderByClause = {
+        [sortBy]: sortOrder === "asc" ? "asc" : "desc",
+        // Fallback ke createdAt jika field yang dipilih null
+        createdAt: sortOrder === "asc" ? "asc" : "desc",
+      };
+    } else {
+      // Default sorting untuk field lain
+      orderByClause = { [sortBy]: sortOrder === "asc" ? "asc" : "desc" };
+    }
+
+    // ✅ Ambil data dengan pagination dan sorting
     const runners = await prisma.runner.findMany({
       where: whereClause,
-      orderBy: { createdAt: "desc" },
+      orderBy: orderByClause,
       skip,
       take: limit,
     });
@@ -79,6 +96,7 @@ export const getAllRunners = async (
         page,
         limit,
         total,
+        sortOrder,
       },
       error: null,
     });
@@ -91,6 +109,8 @@ export const getAllRunners = async (
         page: 1,
         limit: 10,
         total: 0,
+        sortBy: "createdAt",
+        sortOrder: "desc",
       },
       error,
     });
@@ -225,7 +245,6 @@ export const updateLastScanned = async (
   req: Request,
   res: Response<CommonResponse>
 ) => {
-  console.log(req.body);
   const { bib, last_scanned_2 } = req.body;
 
   if (!bib) {
