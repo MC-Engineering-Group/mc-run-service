@@ -17,7 +17,7 @@ router.post("/", validate(CreateRunnerDTO), createRunner);
 router.get("/", getAllRunners);
 router.get("/last-scanned", getLastScanned);
 router.get("/:id", getRunnerById);
-router.put("/scan-bib/:id", updateLastScanned);
+router.put("/scan-bib", updateLastScanned);
 router.put("/:id", validate(UpdateRunnerDTO), updateRunner);
 router.delete("/:id", deleteRunner);
 

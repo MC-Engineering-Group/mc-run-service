@@ -225,7 +225,8 @@ export const updateLastScanned = async (
   req: Request,
   res: Response<CommonResponse>
 ) => {
-  const bib = req.params.id;
+  console.log(req.body);
+  const { bib, last_scanned_2 } = req.body;
 
   if (!bib) {
     return res.status(400).json({
@@ -237,10 +238,20 @@ export const updateLastScanned = async (
   }
 
   try {
-    const runner = await prisma.runner.update({
-      where: { bib },
-      data: { last_scanned: new Date() },
-    });
+    let runner;
+    if (last_scanned_2 === "true") {
+      runner = await prisma.runner.update({
+        where: { bib },
+        data: {
+          last_scanned_2: new Date(),
+        },
+      });
+    } else {
+      runner = await prisma.runner.update({
+        where: { bib },
+        data: { last_scanned: new Date() },
+      });
+    }
 
     return res.status(200).json({
       status: 200,
@@ -260,16 +271,29 @@ export const updateLastScanned = async (
 
 // ✅ Get Runner with Latest Scan
 export const getLastScanned = async (
-  _req: Request,
+  req: Request,
   res: Response<CommonResponse>
 ) => {
+  // if last_scanned_2 params is not null, get last scanned from last_scanned_2
+  const last_scanned_2 = req.query.last_scanned_2;
+
   try {
-    const runner = await prisma.runner.findFirst({
-      where: { last_scanned: { not: null } },
-      orderBy: {
-        last_scanned: "desc",
-      },
-    });
+    let runner;
+    if (last_scanned_2 === "true") {
+      runner = await prisma.runner.findFirst({
+        where: { last_scanned_2: { not: null } },
+        orderBy: {
+          last_scanned_2: "desc",
+        },
+      });
+    } else {
+      runner = await prisma.runner.findFirst({
+        where: { last_scanned: { not: null } },
+        orderBy: {
+          last_scanned: "desc",
+        },
+      });
+    }
 
     if (!runner) {
       return res.status(404).json({

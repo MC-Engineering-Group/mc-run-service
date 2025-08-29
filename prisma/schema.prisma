@@ -28,13 +28,14 @@ model Post {
 }
 
 model Runner {
-  id           Int       @id @default(autoincrement())
-  name         String
-  run_type     String
-  bib          String    @unique
-  last_scanned DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id             Int       @id @default(autoincrement())
+  name           String
+  run_type       String
+  bib            String    @unique
+  last_scanned   DateTime?
+  last_scanned_2 DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
 
 model Key {
